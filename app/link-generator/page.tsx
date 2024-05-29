@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { auth } from '../firebase/firebase'
+import { auth, db } from '../firebase/firebase'
 import {
   Box,
   Container,
@@ -15,14 +15,41 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { collection, addDoc } from 'firebase/firestore'
 
 export default function LinkGenerator() {
   const [loading, setLoading] = useState(false)
+  const [generatedUID, setGeneratedUID] = useState("")
   const [user, error] = useAuthState(auth)
+  const toast = useToast()
 
-  const handleCreate = () => {
+  const handleCreate = (e: any) => {
+    e.preventDefault()
     setLoading(true)
-    // alert("create");
+    addDoc(collection(db, 'ids'), {
+      isActive: false
+    })
+      .then((ref) => {
+        setGeneratedUID(ref.id)
+        toast({
+            title: 'Success!',
+            description: 'Link generated successfully',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
+      })
+      .catch((error) => {
+        toast({
+            title: 'Internal Error',
+            description: '' + error,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
+      }).finally(() => {
+        setLoading(false)
+      })
   }
   return (
     <Center h="90vh">
@@ -36,6 +63,9 @@ export default function LinkGenerator() {
                   Create
               </Button>
             </form>
+          </Box>
+          <Box>
+            Generated UID: {generatedUID}
           </Box>
       </Container>
     </Center>
