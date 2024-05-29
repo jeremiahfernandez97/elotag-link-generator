@@ -29,7 +29,7 @@ interface SignInFormData {
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
-    password: yup.string().min(6).max(32).required(),
+    password: yup.string().required(),
 })
 
 export default function Login() {

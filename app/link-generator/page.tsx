@@ -3,12 +3,15 @@
 import React, { useCallback, useState } from 'react'
 import { auth, db } from '../firebase/firebase'
 import {
+  Flex,
+  Input,
   Box,
   Container,
   Center,
   Button,
   Heading,
   useToast,
+  useClipboard
 } from '@chakra-ui/react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { collection, addDoc } from 'firebase/firestore'
@@ -16,6 +19,7 @@ import ConfirmationModal from '../components/confirmation-modal'
 import { useDisclosure } from '@chakra-ui/react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
+import { CopyIcon, CheckIcon } from '@chakra-ui/icons'
 
 export default function LinkGenerator() {
   const [loading, setLoading] = useState(false)
@@ -26,6 +30,7 @@ export default function LinkGenerator() {
   const [signoutMessage, setSignoutMessage] = useState('Are you sure you want to sign out of ' + user?.email + '?')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
+  const { onCopy, value, setValue, hasCopied } = useClipboard('')
 
   const handleCreate = (e: any) => {
     e.preventDefault()
@@ -35,6 +40,7 @@ export default function LinkGenerator() {
     })
       .then((ref) => {
         setGeneratedUID(ref.id)
+        setValue(ref.id)
         toast({
             title: 'Success!',
             description: 'Link generated successfully',
@@ -107,7 +113,18 @@ export default function LinkGenerator() {
               </form>
             </Box>
             <Box>
-              Generated UID: {generatedUID}
+              <Flex>
+                <Box style={{ whiteSpace: 'nowrap', margin: 'auto' }}>
+                  Generated UID:
+                </Box>
+                <Input
+                  mx={2}
+                  isDisabled={true}
+                  value={value}
+                >
+                </Input>
+                <Button onClick={onCopy}>{hasCopied ? <CheckIcon /> : <CopyIcon />}</Button>
+              </Flex>
             </Box>
         </Container>
       </Center>
