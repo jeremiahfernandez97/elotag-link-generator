@@ -48,28 +48,28 @@ export default function SignUp() {
     }
 
     const addToUsersDb = (email: string, uid: string) => {
-      addDoc(collection(db, 'users'), {
-          email: email,
-          uid: uid,
-      })
-        .then(() => {
-          toast({
-              title: 'Success!',
-              description: email + ' signed up successfully',
-              status: 'success',
-              duration: 9000,
-              isClosable: true,
-          })
+        addDoc(collection(db, 'users'), {
+            email: email,
+            uid: uid,
         })
-        .catch((error) => {
-          toast({
-              title: 'Internal Error (2)',
-              description: '' + error,
-              status: 'error',
-              duration: 9000,
-              isClosable: true,
-          })
-        })
+            .then(() => {
+                toast({
+                    title: 'Success!',
+                    description: email + ' signed up successfully',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            })
+            .catch((error) => {
+                toast({
+                    title: 'Internal Error (2)',
+                    description: '' + error,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            })
     }
 
     const navigateToLinkGenerator = useCallback(() => {
@@ -108,7 +108,7 @@ export default function SignUp() {
                         duration: 9000,
                         isClosable: true,
                     })
-                } else if ((error.code == 'auth/email-already-in-use')) {
+                } else if (error.code == 'auth/email-already-in-use') {
                     toast({
                         title: 'Error!',
                         description: 'This email address is already in use',
@@ -140,31 +140,44 @@ export default function SignUp() {
     })
 
     return (
-      <Center h="90vh">
-        <Container textAlign="center">
-            <Box>
-              <Heading color="#2F855A">Elotag Link Generator</Heading>
-              <Heading mb="10">Create your account</Heading>
-              <form onSubmit={handleSubmit(handleSignUp)}>
-                  <FormControl isInvalid={errors.email != undefined} mb="10">
-                      <FormLabel>Email:</FormLabel>
-                      <Input {...register('email')} type="text" />
-                      <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl isInvalid={errors.password != undefined} mb="10">
-                      <FormLabel>Password:</FormLabel>
-                      <Input {...register('password')} type="password" />
-                      <FormErrorMessage>
-                          {errors.password?.message}
-                      </FormErrorMessage>
-                  </FormControl>
-                  <Button mb="10" color="#2F855A" type="submit" isDisabled={loading}>
-                      Sign up for an account
-                  </Button>
-              </form>
-              <Link href="/login">or Log in to your account</Link>
-            </Box>
-        </Container>
-      </Center>
+        <Center h="90vh">
+            <Container textAlign="center">
+                <Box>
+                    <Heading color="#2F855A">Elotag Link Generator</Heading>
+                    <Heading mb="10">Create your account</Heading>
+                    <form onSubmit={handleSubmit(handleSignUp)}>
+                        <FormControl
+                            isInvalid={errors.email != undefined}
+                            mb="10"
+                        >
+                            <FormLabel>Email:</FormLabel>
+                            <Input {...register('email')} type="text" />
+                            <FormErrorMessage>
+                                {errors.email?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <FormControl
+                            isInvalid={errors.password != undefined}
+                            mb="10"
+                        >
+                            <FormLabel>Password:</FormLabel>
+                            <Input {...register('password')} type="password" />
+                            <FormErrorMessage>
+                                {errors.password?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <Button
+                            mb="10"
+                            color="#2F855A"
+                            type="submit"
+                            isDisabled={loading}
+                        >
+                            Sign up for an account
+                        </Button>
+                    </form>
+                    <Link href="/login">or Log in to your account</Link>
+                </Box>
+            </Container>
+        </Center>
     )
 }
