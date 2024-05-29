@@ -43,44 +43,44 @@ export default function Login() {
     }
 
     const navigateToLinkGenerator = useCallback(() => {
-        router.push('/todo')
+        router.push('/link-generator')
     }, [router])
 
     const signIn = (email: string, password: string) => {
         setLoading(true)
         signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-              navigateToLinkGenerator()
-                toast({
-                    title: 'Success!',
-                    description: 'Signed in',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true,
-                })
-            })
-            .catch((error: any) => {
-              if (error.code == 'auth/invalid-credential') {
-                toast({
-                    title: 'Error!',
-                    description: 'The email and/or password is invalid',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                })
-              } else {
-                toast({
-                    title: 'Internal Error',
-                    description: '' + error,
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                })
-              }
-            })
-            .finally(() => {
-                setLoading(false)
-            })
+          .then(() => {
+            navigateToLinkGenerator()
+              toast({
+                  title: 'Success!',
+                  description: 'Signed in',
+                  status: 'success',
+                  duration: 9000,
+                  isClosable: true,
+              })
+          })
+          .catch((error) => {
+            if (error.code == 'auth/invalid-credential') {
+              toast({
+                  title: 'Error!',
+                  description: 'The email and/or password is invalid',
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+              })
+            } else {
+              toast({
+                  title: 'Internal Error',
+                  description: '' + error,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+              })
+            }
+          })
+          .finally(() => {
+              setLoading(false)
+          })
     }
 
     const {
