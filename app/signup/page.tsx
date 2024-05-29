@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth'
 import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { auth, app, db } from '../firebase/firebase'
+import { auth, db } from '../firebase/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import {
     Box,
@@ -47,28 +47,29 @@ export default function SignUp() {
         signUp(email, password)
     }
 
-    async function addToUsersDb(email: string, uid: string) {
-        try {
-            await addDoc(collection(db, 'users'), {
-                email: email,
-                uid: uid,
-            })
-            toast({
-                title: 'Success!',
-                description: email + ' signed up successfully',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-            })
-        } catch (error) {
-            toast({
-                title: 'Internal Error',
-                description: '' + error,
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-            })
-        }
+    const addToUsersDb = (email: string, uid: string) => {
+      addDoc(collection(db, 'users'), {
+          email: email,
+          uid: uid,
+      })
+        .then(() => {
+          toast({
+              title: 'Success!',
+              description: email + ' signed up successfully',
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+          })
+        })
+        .catch((error) => {
+          toast({
+              title: 'Internal Error (2)',
+              description: '' + error,
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+          })
+        })
     }
 
     const navigateToLinkGenerator = useCallback(() => {
@@ -85,7 +86,7 @@ export default function SignUp() {
                     .then(() => {
                         navigateToLinkGenerator()
                     })
-                    .catch((error: any) => {
+                    .catch((error) => {
                         toast({
                             title: 'Internal Error',
                             description: '' + error,
