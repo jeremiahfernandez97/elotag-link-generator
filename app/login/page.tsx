@@ -49,81 +49,85 @@ export default function Login() {
     const signIn = (email: string, password: string) => {
         setLoading(true)
         signInWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            navigateToLinkGenerator()
-              toast({
-                  title: 'Success!',
-                  description: 'Signed in',
-                  status: 'success',
-                  duration: 9000,
-                  isClosable: true,
-              })
-          })
-          .catch((error) => {
-            if (error.code == 'auth/invalid-credential') {
-              toast({
-                  title: 'Error!',
-                  description: 'The email and/or password is invalid',
-                  status: 'error',
-                  duration: 9000,
-                  isClosable: true,
-              })
-            } else {
-              toast({
-                  title: 'Internal Error',
-                  description: '' + error,
-                  status: 'error',
-                  duration: 9000,
-                  isClosable: true,
-              })
-            }
-          })
-          .finally(() => {
-              setLoading(false)
-          })
+            .then(() => {
+                navigateToLinkGenerator()
+                toast({
+                    title: 'Success!',
+                    description: 'Signed in',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            })
+            .catch((error) => {
+                if (error.code == 'auth/invalid-credential') {
+                    toast({
+                        title: 'Error!',
+                        description: 'The email and/or password is invalid',
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                } else {
+                    toast({
+                        title: 'Internal Error',
+                        description: '' + error,
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                }
+            })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
     })
 
     return (
-      <Center h="90vh">
-        <Container textAlign="center">
-            <Box>
-              <Heading mb="10">Log in to your<br/>Link Generator account</Heading>
-              <form onSubmit={handleSubmit(handleSignIn)}>
-                  <FormControl
-                      isInvalid={errors.email != undefined}
-                      mb="10"
-                  >
-                      <FormLabel>Email:</FormLabel>
-                      <Input {...register('email')} type="text" />
-                      <FormErrorMessage>
-                          {errors.email?.message}
-                      </FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                      isInvalid={errors.password != undefined}
-                      mb="10"
-                  >
-                      <FormLabel>Password:</FormLabel>
-                      <Input {...register('password')} type="password" />
-                      <FormErrorMessage>
-                          {errors.password?.message}
-                      </FormErrorMessage>
-                  </FormControl>
-                  <Button mb="10" type="submit" isDisabled={loading}>
-                      Sign In
-                  </Button>
-              </form>
-              <Link href="/signup">or Sign up for an account</Link>
-            </Box>
-        </Container>
-      </Center>
+        <Center h="90vh">
+            <Container textAlign="center">
+                <Box>
+                    <Heading mb="10">
+                        Log in to your
+                        <br />
+                        Link Generator account
+                    </Heading>
+                    <form onSubmit={handleSubmit(handleSignIn)}>
+                        <FormControl
+                            isInvalid={errors.email != undefined}
+                            mb="10"
+                        >
+                            <FormLabel>Email:</FormLabel>
+                            <Input {...register('email')} type="text" />
+                            <FormErrorMessage>
+                                {errors.email?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <FormControl
+                            isInvalid={errors.password != undefined}
+                            mb="10"
+                        >
+                            <FormLabel>Password:</FormLabel>
+                            <Input {...register('password')} type="password" />
+                            <FormErrorMessage>
+                                {errors.password?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <Button mb="10" type="submit" isDisabled={loading}>
+                            Sign In
+                        </Button>
+                    </form>
+                    <Link href="/signup">or Sign up for an account</Link>
+                </Box>
+            </Container>
+        </Center>
     )
 }
