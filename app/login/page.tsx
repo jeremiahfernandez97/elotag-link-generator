@@ -125,7 +125,6 @@ export default function Login() {
                             Sign In
                         </Button>
                     </form>
-                    <Link href="/signup">or Sign up for an account</Link>
                 </Box>
             </Container>
         </Center>
