@@ -108,7 +108,7 @@ export default function LinkGenerator() {
 
   const generateQRCode = useCallback(async () => {
     try {
-      const url = await QRCode.toDataURL(`https://kblink.ph/${value}`)
+      const url = await QRCode.toDataURL(value)
       setImageUrl(url)
     } catch (err) {
       console.error(err)
@@ -216,7 +216,7 @@ export default function LinkGenerator() {
                       <Button
                         className="w-full"
                         as="a"
-                        download="qrcode.png"
+                        download={`${value}.png`}
                         href={imageUrl}
                         colorScheme="blackAlpha"
                       >
