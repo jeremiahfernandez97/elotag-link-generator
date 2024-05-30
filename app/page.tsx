@@ -11,7 +11,7 @@ export default function Home() {
 
     onAuthStateChanged(auth, (user) => {
         if (!user) {
-            router.push('/signup')
+            router.push('/login')
         } else {
             router.push('/link-generator')
         }
