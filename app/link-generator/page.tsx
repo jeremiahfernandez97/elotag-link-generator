@@ -24,6 +24,7 @@ import { CopyIcon, CheckIcon } from '@chakra-ui/icons'
 export default function LinkGenerator() {
     const [loading, setLoading] = useState(false)
     const [generatedUID, setGeneratedUID] = useState('')
+    const [business, setBusiness] = useState('')
     const [user, error] = useAuthState(auth)
     const toast = useToast()
     const router = useRouter()
@@ -38,7 +39,10 @@ export default function LinkGenerator() {
         e.preventDefault()
         setLoading(true)
         addDoc(collection(db, 'ids'), {
+            business: business,
             isActive: false,
+            createdTime: Date.now(),
+            createdBy: user?.email
         })
             .then((ref) => {
                 setGeneratedUID(ref.id)
@@ -63,6 +67,10 @@ export default function LinkGenerator() {
             .finally(() => {
                 setLoading(false)
             })
+    }
+
+    const handleBusiness = (e: React.FormEvent<HTMLInputElement>) => {
+        setBusiness(e.currentTarget.value)
     }
 
     const handleSignOut = useCallback(async () => {
@@ -113,30 +121,44 @@ export default function LinkGenerator() {
                     >
                         Sign out
                     </Button>
-                    <Box>
-                        <form onSubmit={handleCreate}>
+                    <form onSubmit={handleCreate}>
+                        <Box>
                             <Button mb="10" type="submit" isDisabled={loading}>
                                 Create
                             </Button>
-                        </form>
-                    </Box>
-                    <Box>
-                        <Flex>
-                            <Box
-                                style={{ whiteSpace: 'nowrap', margin: 'auto' }}
-                            >
-                                Generated UID:
-                            </Box>
-                            <Input
-                                mx={2}
-                                isDisabled={true}
-                                value={value}
-                            ></Input>
-                            <Button onClick={onCopy}>
-                                {hasCopied ? <CheckIcon /> : <CopyIcon />}
-                            </Button>
-                        </Flex>
-                    </Box>
+                        </Box>
+                        <Box>
+                            <Flex>
+                                <Box
+                                    style={{ whiteSpace: 'nowrap', margin: 'auto' }}
+                                >
+                                    Generated UID:
+                                </Box>
+                                <Input
+                                    mx={2}
+                                    isDisabled={true}
+                                    value={value}
+                                ></Input>
+                                <Button onClick={onCopy}>
+                                    {hasCopied ? <CheckIcon /> : <CopyIcon />}
+                                </Button>
+                            </Flex>
+                        </Box>
+                        <Box>
+                            <Flex>
+                                <Box
+                                    style={{ whiteSpace: 'nowrap', margin: 'auto' }}
+                                >
+                                    Business:
+                                </Box>
+                                <Input required
+                                    mt={2}
+                                    ml={2}
+                                    onChange={handleBusiness}
+                                ></Input>
+                            </Flex>
+                        </Box>
+                    </form>
                 </Container>
             </Center>
 
