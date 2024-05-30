@@ -49,9 +49,7 @@ export default function LinkGenerator() {
     const [user, error] = useAuthState(auth)
     const toast = useToast()
     const router = useRouter()
-    const [signoutMessage, setSignoutMessage] = useState(
-        'Are you sure you want to sign out of ' + user?.email + '?'
-    )
+    const [signoutMessage, setSignoutMessage] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
     const { onCopy, value, setValue, hasCopied } = useClipboard('')
@@ -61,7 +59,7 @@ export default function LinkGenerator() {
     firebase.initializeApp(firebaseConfig);
     const db_fs = firebase.firestore();
 
-    const handleGenerate = (e: any) => {
+    const handleGenerate = (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
 
@@ -100,8 +98,10 @@ export default function LinkGenerator() {
                     queryResultIds.push({
                         uid: doc.id
                     })
+                    console.log("doc: " + doc)
                 })
                 setQueriedIds(queryResultIds)
+                console.log("queryResultIds: " + queryResultIds)
             }
             getQueriedIds()
             
@@ -152,6 +152,8 @@ export default function LinkGenerator() {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             router.push('/login')
+        } else {
+            setSignoutMessage('Are you sure you want to sign out of ' + user?.email + '?')
         }
     })
 
