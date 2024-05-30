@@ -123,9 +123,23 @@ export default function LinkGenerator() {
                     </Button>
                     <form onSubmit={handleCreate}>
                         <Box>
-                            <Button mb="10" type="submit" isDisabled={loading}>
-                                Create
-                            </Button>
+                        </Box>
+                        <Box>
+                            <Flex mb={3}>
+                                <Box
+                                    style={{ whiteSpace: 'nowrap', margin: 'auto' }}
+                                >
+                                    Business:
+                                </Box>
+                                <Input required
+                                    mx={2}
+                                    onChange={handleBusiness}
+                                    placeholder="Enter business name"
+                                ></Input>
+                                <Button type="submit" isDisabled={loading}>
+                                    Create
+                                </Button>
+                            </Flex>
                         </Box>
                         <Box>
                             <Flex>
@@ -142,20 +156,6 @@ export default function LinkGenerator() {
                                 <Button onClick={onCopy}>
                                     {hasCopied ? <CheckIcon /> : <CopyIcon />}
                                 </Button>
-                            </Flex>
-                        </Box>
-                        <Box>
-                            <Flex>
-                                <Box
-                                    style={{ whiteSpace: 'nowrap', margin: 'auto' }}
-                                >
-                                    Business:
-                                </Box>
-                                <Input required
-                                    mt={2}
-                                    ml={2}
-                                    onChange={handleBusiness}
-                                ></Input>
                             </Flex>
                         </Box>
                     </form>
